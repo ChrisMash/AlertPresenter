@@ -147,7 +147,7 @@ by the `.swiftlint.yml` file in the root of the project.
 Run a scan with the following command in the root of the project:
 `swiftlint`
 
-SwiftLint is also included in the automated tests.
+SwiftLint execution is also included in the automated tests.
 
 ### Jazzy docs
 
@@ -159,7 +159,7 @@ Xcode will be correct and useful to users. `.jazzy.yaml` contains the configurat
 Generate the documentation using the following command in the root of the project:
 `jazzy`
 
-Jazzy is also included in the automated tests.
+Jazzy execution is also included in the automated tests.
 
 ### Running automated tests
 

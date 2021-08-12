@@ -1,0 +1,19 @@
+disabled_rules:
+  - trailing_whitespace
+  - statement_position
+  
+opt_in_rules:
+  - force_unwrapping
+  
+included:
+  - Sources
+  
+type_name:
+  excluded:
+    - ContentView_Previews
+
+line_length:
+  warning: 140
+  error: 150
+
+reporter: "xcode"

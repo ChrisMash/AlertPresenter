@@ -1,0 +1,158 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+require 'fileutils'
+require 'json'
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+AP_SUMMARY_LOG = "\n\nSummary:\n"
+
+before_each do |lane, options|
+    AP_OPTIONS_STR = options.length() > 0 ? options.to_s : ""
+    AP_SUMMARY_LOG += "Ran: " + lane.to_s + " " + AP_OPTIONS_STR + "\n"
+end
+
+after_all do |lane, options|
+    UI.message(AP_SUMMARY_LOG)
+end
+
+desc "Runs Unit tests and checks code coverage"
+lane :unitTests do
+    AP_PROJECT = "AlertPresenter.xcodeproj"
+    AP_SCHEME = "AlertPresenter-Package"
+
+    # tvOS Unit Tests
+    run_tests(
+        project: AP_PROJECT,
+        scheme: AP_SCHEME,
+        device: "Apple TV"
+    )
+
+    # iPhone Unit Tests
+    run_tests(
+        project: AP_PROJECT,
+        scheme: AP_SCHEME,
+        device: "iPhone 11"
+    ) 
+
+    # iPad Unit Tests
+    run_tests(
+        project: AP_PROJECT,
+        scheme: AP_SCHEME,
+        device: "iPad Pro (9.7-inch)"
+    ) 
+
+    AP_TEST_OUTPUT_DIR = 'test_output'
+    AP_XCOV_OUTPUT_DIR = 'code_coverage'
+
+    # Clear existing xcov output
+    Dir.chdir(AP_TEST_OUTPUT_DIR) do
+        (FileUtils.remove_dir(AP_XCOV_OUTPUT_DIR)) rescue "Skipping error"
+    end
+
+    # Check coverage percentage
+    xcov(
+        project: AP_PROJECT,
+        scheme: AP_SCHEME,
+        output_directory: './fastlane/' + AP_TEST_OUTPUT_DIR + '/' + AP_XCOV_OUTPUT_DIR,
+        include_targets: 'AlertPresenter.framework',
+        minimum_coverage_percentage: 94.0
+    )
+end
+
+desc "Runs specific set of UI tests"
+lane :uiTests do |options|
+    AP_PROJECT = "TestApps/TestApps.xcodeproj"
+    AP_OS_VERSION = options[:OS]
+    AP_SCHEME = options[:scheme]
+    AP_DESTINATION = options[:destination]
+    
+    run_tests(
+        project: AP_PROJECT,
+        scheme: AP_SCHEME,
+        deployment_target_version: AP_OS_VERSION,
+        destination: AP_DESTINATION
+    )
+end
+
+desc "Runs UI tests across all schemes, platforms and multiple OS versions"
+lane :allUITests do
+    AP_OS_VERSIONS = [
+                    #12.0,
+                    13.0,
+                    14.5
+                    ]
+    
+    for ver in AP_OS_VERSIONS do
+        AP_VER_STR = ver.to_s
+        AP_TVOS_DEST = "platform=tvOS Simulator,name=Apple TV,OS=" + AP_VER_STR
+        AP_IPHONE_DEST = "platform=iOS Simulator,name=iPhone 8,OS=" + AP_VER_STR
+        AP_IPAD_DEST = "platform=iOS Simulator,name=iPad Pro (9.7-inch),OS=" + AP_VER_STR
+        AP_IOS_DESTS = [AP_IPHONE_DEST, AP_IPAD_DEST]
+        
+        # tvOS UI tests
+        uiTests(OS: AP_VER_STR, scheme: "tvOSExample", destination: AP_TVOS_DEST) if ver >= 14.0
+
+        # iOS UI tests (both iPhone and iPad)
+        for dest in AP_IOS_DESTS do
+            uiTests(OS: AP_VER_STR, scheme: "iOSExample", destination: dest) if ver >= 14.0
+            uiTests(OS: AP_VER_STR, scheme: "iOSExample_UIKit", destination: dest) if ver >= 13.0
+            uiTests(OS: AP_VER_STR, scheme: "iOSExample_UIKit_Legacy", destination: dest)
+            uiTests(OS: AP_VER_STR, scheme: "iOSExample_ObjC", destination: dest)
+        end
+    end
+end
+
+desc "Runs check for undocumented public APIs"
+lane :checkDocs do 
+    Dir.chdir("../") do
+        # Remove previously generated docs
+        (FileUtils.remove_dir("build")) rescue "Skipping error"
+        (FileUtils.remove_dir("docs")) rescue "Skipping error"
+
+        # Generate docs with Jazzy
+        sh 'jazzy'
+
+        # Parse undocumented.json and check for warnings
+        Dir.chdir("docs") do
+            AP_FILE = File.read('undocumented.json')
+            AP_DOC_RESULTS = JSON.parse(AP_FILE)
+            AP_WARNINGS = AP_DOC_RESULTS['warnings']
+            if AP_WARNINGS.length() > 0
+                UI.user_error!("Undocumented public API detected: " + AP_WARNINGS.join(', '))
+            else
+                UI.success("No undocumented public API detected")
+            end
+        end
+    end
+end
+
+desc "Runs linter to check for warnings"
+lane :lint do 
+    # Run linter
+    swiftlint(
+        mode: :lint,
+        config_file: ".swiftlint.yml",
+        raise_if_swiftlint_error: true,
+        strict: true
+    )
+end
+
+desc "Runs all tests"
+lane :allTests do
+    unitTests
+    checkDocs
+    lint
+    allUITests
+end

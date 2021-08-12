@@ -1,0 +1,7 @@
+author: Chris Mash
+github_url: https://github.com/ChrisMash/AlertPresenter
+theme: fullwidth
+module: AlertPresenter
+xcodebuild_arguments: 
+ - -sdk
+ - iphoneos

@@ -1,6 +1,7 @@
 # AlertPresenter
 
-Listed on the [Swift Package Index](https://swiftpackageindex.com/ChrisMash/AlertPresenter).
+Listed on the [Swift Package Index](https://swiftpackageindex.com/ChrisMash/AlertPresenter) and
+originally posted on my [blog](https://chris-mash.medium.com/easy-uialertcontroller-presentation-40e69a29ea99).
 
 It can be fiddly to handle the presentation of alerts on a specific view controller, especially when transition animations 
 or other things currently being presented on that view controller can silently prevent the alert from being presented.

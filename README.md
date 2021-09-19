@@ -1,7 +1,8 @@
 # AlertPresenter
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FChrisMash%2FAlertPresenter%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/ChrisMash/AlertPresenter)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FChrisMash%2FAlertPresenter%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/ChrisMash/AlertPresenter)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FChrisMash%2FAlertPresenter%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/ChrisMash/AlertPresenter) \
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FChrisMash%2FAlertPresenter%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/ChrisMash/AlertPresenter) \
+![Cocoapods](https://img.shields.io/cocoapods/v/AlertPresenter)
 
 Listed on the [Swift Package Index](https://swiftpackageindex.com/ChrisMash/AlertPresenter) and
 originally posted on my [blog](https://chris-mash.medium.com/easy-uialertcontroller-presentation-40e69a29ea99).

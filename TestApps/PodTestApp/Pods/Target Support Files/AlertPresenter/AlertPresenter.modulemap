@@ -1,6 +1,0 @@
-framework module AlertPresenter {
-  umbrella header "AlertPresenter-umbrella.h"
-
-  export *
-  module * { export * }
-}

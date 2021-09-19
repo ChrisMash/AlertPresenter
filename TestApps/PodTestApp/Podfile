@@ -6,6 +6,6 @@ target 'PodTestApp' do
   use_frameworks!
 
   # Pods for PodTestApp
-  pod 'AlertPresenter', :path => '../../'
+  pod 'AlertPresenter'#, :path => '../../'
   
 end

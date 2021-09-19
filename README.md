@@ -126,6 +126,7 @@ presentation customisation, popover customisation, iOS/tvOS 12 and SwiftUI:
 * iOSExample_UIKit_Legacy: A Swift, UIKit example for iOS 12+, using just `UIApplicationDelegate`
 * iOSExample_ObjC: An ObjC, UIKit example for iOS 12+, using just `UIApplicationDelegate`
 * tvOSExample: A SwiftUI example for tvOS 13+, using `App` instead of `UIApplicationDelegate`
+* PodTestApp: A SwiftUI test app for the cocoapod
 
 ## Contributions
 

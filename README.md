@@ -31,8 +31,14 @@ packaged it up and added a few more features and testing.
 
 ## Adding to your project
 
+### Swift Package
+
 Follow [Apple's guidance](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) 
 to add the package to your project.
+
+### Cocoapod
+
+Follow the guidance on [the cocoapods page](https://cocoapods.org) to add the `AlertPresenter` pod to your project or set up cocoapods from scratch.
 
 ## Usage
 
